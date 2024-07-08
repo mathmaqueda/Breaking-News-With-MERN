@@ -1,4 +1,4 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
 // inline, sem chaves, não precisa de return
 const createService = (body) => User.create(body);
@@ -17,7 +17,7 @@ const updateService = (
     background
 ) => User.findOneAndUpdate({ _id: id }, { name, username, password, email, avatar, background })
 
-module.exports = {
+export default {
     createService,
     findAllService,
     findByIdService,
