@@ -4,7 +4,7 @@ const connectDatabase = async () => {
     console.log("Waiting for database connection");
 
     mongoose.connect(
-        "mongodb+srv://matheusmaqueda10:q4l0ODNJtOtBam9D@mongocluster.dzvyysh.mongodb.net/?retryWrites=true&w=majority&appName=mongoCluster"
+        process.env.MONGODB_URI
     ).then(
         () => console.log("MongoDB Atlas Connected")
     ).catch(
