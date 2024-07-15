@@ -15,3 +15,11 @@ export const topNewsService = () => News.findOne().sort({_id: -1}).populate("use
 
 export const findByIdService = (id) => News.findById(id).populate("user");
 // populate pois cada notícia tem usuário atrelado a ela.
+
+export const searchByTitleService = (title) => News.find({
+    // chaves para find específico.
+    // cifrão para comando específico no MONGODB
+    // comando $regex passa parâmetros da query string
+    // $options especifica opções
+    title: {$regex: `${title || ""}`, $options: "i"}
+}).sort({_id: -1}).populate("user");
