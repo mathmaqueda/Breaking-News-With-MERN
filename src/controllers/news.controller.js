@@ -1,4 +1,4 @@
-import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js";
+import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js";
 
 export const create = async (req, res) => {
     try {
@@ -177,7 +177,7 @@ export const byUser = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.id;
         const { title, text, banner } = req.body;
 
         if (!title && !text && !banner) {
@@ -192,7 +192,19 @@ export const update = async (req, res) => {
 
         await updateService(id, title, text, banner);
 
-        return res.send({message: "Post successfully updated!"});
+        return res.send({ message: "Post successfully updated!" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export const erase = async (req, res) => {
+    try {
+        const id = req.id;
+
+        await eraseService(id);
+
+        return res.send({ message: "Post successfully deleted!" });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

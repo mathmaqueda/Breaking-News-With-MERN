@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import userService from '../services/user.service.js';
+import {findByIdService} from '../services/news.service.js';
 
 export const validId = (req, res, next) => {
     const id = req.params.id;
@@ -22,6 +23,20 @@ export const validUser = async (req, res, next) => {
 
     req.id = id;
     req.user = user;
+
+    next();
+};
+
+export const validAuthenticatedUser = async (req, res, next) => {
+    const id = req.params.id;
+
+    const news = await findByIdService(id);
+ 
+    if (String(news.user._id) !== req.userId) {
+        return res.status(400).send({ message: "You're not the owner of the news." });
+    }
+
+    req.id = id;
 
     next();
 };
