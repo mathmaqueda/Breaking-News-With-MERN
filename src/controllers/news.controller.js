@@ -1,4 +1,4 @@
-import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService } from "../services/news.service.js";
+import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js";
 
 export const create = async (req, res) => {
     try {
@@ -170,6 +170,29 @@ export const byUser = async (req, res) => {
                 userAvatar: item.user.avatar
             }))
         });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export const update = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, text, banner } = req.body;
+
+        if (!title && !text && !banner) {
+            res.status(400).send({ message: "Submit all fields for update" });
+        }
+
+        const news = await findByIdService(id);
+
+        if (String(news.user._id) !== req.userId) {
+            return res.status(400).send({ message: "You can't update this post." });
+        }
+
+        await updateService(id, title, text, banner);
+
+        return res.send({message: "Post successfully updated!"});
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
