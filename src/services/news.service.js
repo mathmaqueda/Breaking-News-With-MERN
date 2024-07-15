@@ -23,3 +23,5 @@ export const searchByTitleService = (title) => News.find({
     // $options especifica opções
     title: {$regex: `${title || ""}`, $options: "i"}
 }).sort({_id: -1}).populate("user");
+
+export const byUserService = (id) => News.find({user: id}).sort({_id: -1}).populate("user");
