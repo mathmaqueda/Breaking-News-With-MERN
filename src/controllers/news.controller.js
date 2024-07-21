@@ -1,4 +1,4 @@
-import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js";
+import { countNews, createService, findAllService, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService, likeNewsService, deleteLikeNewsService, addCommentService, deleteCommentService } from "../services/news.service.js";
 
 export const create = async (req, res) => {
     try {
@@ -205,6 +205,61 @@ export const erase = async (req, res) => {
         await eraseService(id);
 
         return res.send({ message: "Post successfully deleted!" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export const likeNews = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.userId;
+
+        const newsLiked = await likeNewsService(id, userId);
+
+        if (!newsLiked) {
+            await deleteLikeNewsService(id, userId);
+            return res.status(200).send({ message: "Disliked" });
+        }
+
+        res.send({ message: "Liked" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export const addComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.userId;
+        const {comment} = req.body;
+
+        if (!comment) {
+            return res.status(400).send({ message: "Write a message to comment" });
+        }
+
+        await addCommentService(id, comment, userId);
+
+        res.send({ message: "Comment added successfully" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export const deleteComment = async (req, res) => {
+    try {
+        const { id, idComment } = req.params;
+        const userId = req.userId;
+
+        const commentDeleted = await deleteCommentService(id, idComment, userId);
+
+        const commentFinder = commentDeleted.comments.find(comment => comment.idComment === idComment);
+
+        if (commentFinder.userId !== userId) {
+            return res.status(400).send({ message: "You can't delete this comment" });
+        }
+
+        res.send({ message: "Comment deleted successfully" });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
