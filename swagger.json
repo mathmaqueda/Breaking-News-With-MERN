@@ -10,12 +10,12 @@
     },
     "servers": [
         {
-            "url": "http://localhost:3000",
-            "description": "Local server"
-        },
-        {
             "url": "https://breaking-news-api-dcmg.onrender.com",
             "description": "Deployed server"
+        },
+        {
+            "url": "http://localhost:3000",
+            "description": "Local server"
         }
     ],
     "paths": {
