@@ -47,10 +47,7 @@ export const findAll = async (req, res) => {
 
         const previous = offset - limit < 0 ? null : offset - limit;
         const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
-
-        if (news.length === 0) {
-            return res.status(404).send({ message: "There are no registered news" });
-        }
+        
         res.send({
             nextUrl,
             previousUrl,
