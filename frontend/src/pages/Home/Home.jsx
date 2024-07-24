@@ -11,7 +11,7 @@ export default function Home() {
         console.log(res);
     }
 
-    findAllNews;
+    findAllNews();
 
     return (
         <>
