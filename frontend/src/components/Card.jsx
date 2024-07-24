@@ -1,39 +1,29 @@
-import PropTypes from 'prop-types';
 import { MessageCircle, Heart } from 'lucide-react';
 import { CardBody, CardContainer, CardFooter } from './Card.styled';
+import TextLimit from './TextLimit';
 
-export default function Card({ news }) {
+export default function Card({ title, text, banner, likes, comments }) {
     return (
         <CardContainer>
             <CardBody>
                 <div>
-                    <h2>{news.title}</h2>
-                    <p>{news.text}</p>
+                    <h2>{title}</h2>
+                    <img src={banner} alt="Imagem" />
                 </div>
-                <img src={news.image} alt="Imagem" />
+                <TextLimit text={text} limit={150}/>
             </CardBody>
 
             <CardFooter>
                 <div>
                     <i><Heart /></i>
-                    <span>{news.likes}</span>
+                    <span>{likes}</span>
                 </div>
 
                 <div>
                     <i><MessageCircle /></i>
-                    <span>{news.comments}</span>
+                    <span>{comments}</span>
                 </div>
             </CardFooter>
         </CardContainer>
     );
 }
-
-Card.propTypes = {
-    news: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      likes: PropTypes.number.isRequired,
-      comments: PropTypes.number.isRequired,
-    }).isRequired,
-  };
