@@ -1,29 +1,29 @@
 import { MessageCircle, Heart } from 'lucide-react';
-import { CardBody, CardContainer, CardFooter } from './Card.styled';
+import { CardBody, CardContainer, CardFooter, CardHeader } from './Card.styled';
 import TextLimit from './TextLimit';
 
-export default function Card({ title, text, banner, likes, comments }) {
+export default function Card({ title, text, banner, likes, comments, top }) {
     return (
         <CardContainer>
-            <CardBody>
+            <CardBody top={top}>
                 <div>
-                    <h2>{title}</h2>
-                    <img src={banner} alt="Imagem" />
+                    <CardHeader>
+                        <h2>{title}</h2>
+                        <TextLimit text={text} limit={top ? 300 : 150} />
+                    </CardHeader>
+                    <CardFooter>
+                        <section>
+                            <i><Heart /></i>
+                            <span>{likes?.length}</span>
+                        </section>
+                        <section>
+                            <i><MessageCircle /></i>
+                            <span>{comments?.length}</span>
+                        </section>
+                    </CardFooter>
                 </div>
-                <TextLimit text={text} limit={150}/>
+                <img src={banner} alt="Imagem" />
             </CardBody>
-
-            <CardFooter>
-                <div>
-                    <i><Heart /></i>
-                    <span>{likes}</span>
-                </div>
-
-                <div>
-                    <i><MessageCircle /></i>
-                    <span>{comments}</span>
-                </div>
-            </CardFooter>
         </CardContainer>
     );
 }
