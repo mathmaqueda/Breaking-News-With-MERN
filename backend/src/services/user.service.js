@@ -3,6 +3,8 @@ import User from '../models/User.js';
 // inline, sem chaves, não precisa de return
 const createService = (body) => User.create(body);
 
+const findByEmailService = (email) => User.findOne({email: email});
+
 const findAllService = () => User.find();
 
 const findByIdService = (id) => User.findById(id);

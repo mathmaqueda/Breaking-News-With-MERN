@@ -1,29 +1,20 @@
 import express from 'express';
 import connectDatabase from "./src/database/database.js";
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import cors from 'cors';
-
-import userRoute from "./src/routes/user.route.js";
-import authRoute from "./src/routes/auth.route.js";
-import newsRoute from "./src/routes/news.route.js";
-import swaggerRoute from "./src/routes/swagger.route.cjs";
-
-dotenv.config();
+import router from './src/routes/index.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
 
 connectDatabase();
 app.use(cors({
     origin: process.env.WEB_BASE_URL
 }));
 app.use(express.json());
-app.use("/user", userRoute);
-app.use("/auth", authRoute);
-app.use("/news", newsRoute);
-app.use("/doc", swaggerRoute);
+app.use(router);
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+export default app;
 
 // ROTA - Itens Principais:
     // Method HTTP - CRUD:

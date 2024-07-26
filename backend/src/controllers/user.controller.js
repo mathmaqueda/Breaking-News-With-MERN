@@ -8,6 +8,12 @@ const create = async (req, res) => {
             return res.status(400).send({ message: "Usuário está vazio!" });
         }
 
+        const userExists = await userService.findByEmailService(email);
+
+        if (userExists) {
+            return res.status(400).send({ message: "Email already exists" });
+        }
+
         const user = await userService.createService(req.body);
 
         if (!user) {
