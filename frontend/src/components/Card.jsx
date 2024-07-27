@@ -1,13 +1,13 @@
 import { MessageCircle, Heart } from 'lucide-react';
-import { CardBody, CardContainer, CardFooter, CardHeader } from './Card.styled';
+import { CardBody, CardContainer, CardFooter, CardHeader } from './Card.styled.jsx';
 import TextLimit from './TextLimit';
 
 export default function Card({ title, text, banner, likes, comments, top }) {
     return (
         <CardContainer>
-            <CardBody top={top}>
+            <CardBody>
                 <div>
-                    <CardHeader>
+                    <CardHeader $top={top}>
                         <h2>{title}</h2>
                         <TextLimit text={text} limit={top ? 300 : 150} />
                     </CardHeader>

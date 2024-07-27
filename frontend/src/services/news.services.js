@@ -10,4 +10,9 @@ export function getAllNews() {
 export function getTopNews() {
     const res = axios.get(`${baseURL}/news/top`);
     return res;
+}
+
+export function searchNews(title) {
+    const res = axios.get(`${baseURL}/news/search?title=${title}`);
+    return res;
 } 

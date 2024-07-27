@@ -25,7 +25,7 @@ export const CardBody = styled.article`
   }
 
   img {
-    width: 30%;
+    width: 35%;
     object-fit: cover;
     object-position: center;
     border-radius: 0 0.3 0.3rem 0;
@@ -36,11 +36,11 @@ export const CardHeader = styled.article`
   display: flex;
   flex-direction: column;
   width: 100%;
-  font-size: ${(props) => (props.top ? "1.5rem" : "0.9rem")};
+  font-size: ${(props) => props.$top ? "1.5rem" : "0.9rem"};
 
   h2 {
     margin-bottom: 1rem;
-    font-size: ${(props) => (props.top ? "3rem" : "1.5rem")};
+    font-size: ${(props) => (props.$top ? "2.8rem" : "1.1rem")};
     width: 100%;
   }
 
