@@ -11,7 +11,6 @@ export const GlobalStyled = createGlobalStyle`
 
   html {
     width: auto;
-    margin-top: 6rem;
   }
 
   body {

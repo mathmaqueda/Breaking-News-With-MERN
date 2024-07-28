@@ -24,6 +24,10 @@ export default function Navbar() {
         reset();
     }
 
+    function goAuth() {
+        navigate("/auth");
+    }
+
     return (
         <>
             <Nav>
@@ -46,7 +50,7 @@ export default function Navbar() {
                     <ImageLogo src={logo} alt="Breaking News" />
                 </Link>
 
-                <Button>Entrar</Button>
+                <Button onClick={goAuth}>Entrar</Button>
             </Nav>
             {errors.title && <ErrorSpan>{errors.title.message}</ErrorSpan>}
             <Outlet />

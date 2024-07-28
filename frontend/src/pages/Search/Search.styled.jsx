@@ -27,6 +27,7 @@ export const TextResults = styled.div`
     width: 80%;
     border-radius: 0.3rem;
     box-shadow: 0 2px 5px 0 rgba(50, 50, 105, 0.15), 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+    margin-top: 6rem;
 
     span {
         font-size: 1rem;

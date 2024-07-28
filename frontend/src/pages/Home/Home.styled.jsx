@@ -12,4 +12,5 @@ export const HomeHeader = styled.section`
   width: 80%;
   display: flex;
   margin: 1rem auto;
+  margin-top: 6.5rem;
 `
