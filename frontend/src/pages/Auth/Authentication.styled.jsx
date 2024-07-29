@@ -18,8 +18,10 @@ export const AuthContainer = styled.div`
 
 export const Section = styled.section`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: ${props => props.type === "signin" ? "1rem 0 0 1rem" : "0 1rem 1rem 0"};
     width: 100%;
     height: 350px;
     padding: 2rem;

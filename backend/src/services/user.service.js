@@ -20,6 +20,7 @@ const updateService = (
 ) => User.findOneAndUpdate({ _id: id }, { name, username, password, email, avatar, background })
 
 export default {
+    findByEmailService,
     createService,
     findAllService,
     findByIdService,

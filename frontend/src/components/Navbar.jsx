@@ -2,19 +2,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Search } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
 import logo from '../assets/img/LogoBN.png';
-import { Button, ErrorSpan, ImageLogo, InputSpace, Nav } from './Navbar.styled.jsx';
-
-const searchSchema = z.object({
-    title: z.string().min(1, { message: "A pesquisa não pode ser vazia" }).refine(value=> !/^\s*$/.test(value), {message: "A pesquisa não pode conter apenas espaços"}),
-})
+import { ErrorSpan, ImageLogo, InputSpace, Nav } from './Navbar.styled.jsx';
+import Button from './Button.jsx';
+import { searchSchema } from '../Schemas/searchSchema.js';
 
 export default function Navbar() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: zodResolver(searchSchema)
     });
-    
+
     const navigate = useNavigate();
 
     function onSearch(data) {
@@ -22,10 +19,6 @@ export default function Navbar() {
 
         navigate(`/search/${title}`);
         reset();
-    }
-
-    function goAuth() {
-        navigate("/auth");
     }
 
     return (
@@ -50,7 +43,9 @@ export default function Navbar() {
                     <ImageLogo src={logo} alt="Breaking News" />
                 </Link>
 
-                <Button onClick={goAuth}>Entrar</Button>
+                <Link to="/auth">
+                    <Button type="button" text="Entrar" />
+                </Link>
             </Nav>
             {errors.title && <ErrorSpan>{errors.title.message}</ErrorSpan>}
             <Outlet />
