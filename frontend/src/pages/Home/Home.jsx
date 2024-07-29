@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Card from "../../components/Card";
 import { getAllNews, getTopNews } from "../../services/news.services";
 import { HomeBody, HomeHeader } from "./Home.styled";
-import Cookies from 'js-cookie';
 
 export default function Home() {
 
@@ -19,7 +18,6 @@ export default function Home() {
 
     useEffect(() => {
         findNews();
-        console.log(Cookies.get("token"));
     }, []);
 
     return (

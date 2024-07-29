@@ -4,11 +4,11 @@ import Input from "../../components/Input";
 import { AuthContainer, Section } from "./Authentication.styled";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorSpan } from "../../components/Navbar.styled";
-import {signinSchema} from "../../Schemas/signinSchema";
+import { signinSchema } from "../../Schemas/signinSchema";
 import { signupSchema } from "../../Schemas/signupSchema";
 import { signin, signup } from "../../services/user.services";
 import Cookies from "js-cookie";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Authentication() {
     const {
@@ -30,7 +30,8 @@ export default function Authentication() {
     async function inHandleSubmit(data) {
         try {
             const res = await signin(data);
-            Cookies.set("token", res.data.token, {expires: 1});
+            Cookies.set("token", res.data.token, { expires: 1 });
+            Cookies.set("userId", res.data.userId, { expires: 1 });
             navigate("/");
         } catch (err) {
             console.log(err);
@@ -42,7 +43,8 @@ export default function Authentication() {
     async function upHandleSubmit(data) {
         try {
             const res = await signup(data);
-            Cookies.set("token", res.data.token, {expires: 1});
+            Cookies.set("token", res.data.token, { expires: 1 });
+            Cookies.set("userId", res.data.userId, { expires: 1 });
             navigate("/");
         } catch (err) {
             console.log(err);

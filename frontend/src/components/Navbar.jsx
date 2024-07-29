@@ -1,11 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Cookies from 'js-cookie';
 import { Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../assets/img/LogoBN.png';
-import { ErrorSpan, ImageLogo, InputSpace, Nav } from './Navbar.styled.jsx';
-import Button from './Button.jsx';
 import { searchSchema } from '../Schemas/searchSchema.js';
+import { userLogged } from '../services/user.services.js';
+import Button from './Button.jsx';
+import { ErrorSpan, ImageLogo, InputSpace, Nav, UserLoggedSpace } from './Navbar.styled.jsx';
+import { LogOut } from 'lucide-react';
 
 export default function Navbar() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -14,12 +18,36 @@ export default function Navbar() {
 
     const navigate = useNavigate();
 
+    const [user, setUser] = useState({});
+
     function onSearch(data) {
         const { title } = data;
 
         navigate(`/search/${title}`);
         reset();
     }
+
+    async function findUserLogged() {
+        try {
+            const res = await userLogged()
+            setUser(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function signout() {
+        Cookies.remove('token');
+        Cookies.remove('userId');
+        setUser(undefined);
+        navigate("/");
+    }
+
+    useEffect(() => {
+        if (Cookies.get('token')) {
+            findUserLogged();
+        }
+    }, [])
 
     return (
         <>
@@ -43,9 +71,19 @@ export default function Navbar() {
                     <ImageLogo src={logo} alt="Breaking News" />
                 </Link>
 
-                <Link to="/auth">
-                    <Button type="button" text="Entrar" />
-                </Link>
+                {user ? (
+                    <UserLoggedSpace>
+                        <Link to="/profile">
+                            <h2>{user.name}</h2>
+                        </Link>
+                        <i onClick={signout}><LogOut/></i>
+                    </UserLoggedSpace>
+                ) : (
+                    <Link to="/auth">
+                        <Button type="button" text="Entrar" />
+                    </Link>
+                )}
+
             </Nav>
             {errors.title && <ErrorSpan>{errors.title.message}</ErrorSpan>}
             <Outlet />

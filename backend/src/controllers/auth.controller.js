@@ -19,7 +19,10 @@ const login = async (req, res) => {
 
         const token = generateToken(user.id);
     
-        res.send({token});
+        res.send({
+            token,
+            userId: user.id
+        });
     } catch (err) {
         res.status(500).send(err.message);
     }
