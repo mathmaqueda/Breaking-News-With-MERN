@@ -35,6 +35,7 @@ export const CardBody = styled.article`
 export const CardHeader = styled.article`
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 100%;
   font-size: ${(props) => props.$top ? "1.5rem" : "0.9rem"};
 
@@ -69,5 +70,21 @@ export const CardFooter = styled.article`
         display: flex;
         align-items: center;
         gap: 0.2rem;
+    }
+
+    i.edit {
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.3s ease-in-out;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+
+    i.edit:hover {
+      color: #0bade3;
     }
 `;

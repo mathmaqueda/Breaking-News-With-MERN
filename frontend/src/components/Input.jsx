@@ -1,11 +1,23 @@
-import { InputSpace } from "./Input.styled";
+import { useState } from "react";
+import { InputSpace, TextareaSpace } from "./Input.styled";
 
-export default function Input({ type, placeholder, name, register }) {
+export default function Input({ type, placeholder, name, isInput = true, register, value: initialValue }) {
+    const [value, setValue] = useState(initialValue);
+    let inputProps = {
+        type,
+        placeholder,
+        ...register(name),
+        onchange: (e) => setValue(e.target.value)
+    };
+    if (value) inputProps.value = value;
+
     return (
-        <InputSpace
-            type={type}
-            placeholder={placeholder}
-            {...register(name)}
-        />
+        <>
+            {isInput ? (
+                <InputSpace {...inputProps} />
+            ) : (
+                <TextareaSpace {...inputProps} />
+            )}
+        </>
     );
 }

@@ -27,3 +27,12 @@ export function getAllNewsByUser() {
     console.log(res);
     return res;
 }
+
+export function createNews(body) {
+    const res = axios.post(`${baseURL}/news`, body, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}

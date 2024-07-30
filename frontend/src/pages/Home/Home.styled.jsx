@@ -9,7 +9,7 @@ export const HomeBody = styled.section`
 `;
 
 export const HomeHeader = styled.section`
-  width: 100%;
+  width: 85%;
   display: flex;
   justify-content: center;
   margin: 1rem auto;

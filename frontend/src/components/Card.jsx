@@ -1,8 +1,9 @@
-import { MessageCircle, Heart } from 'lucide-react';
+import { MessageCircle, Heart, Edit } from 'lucide-react';
 import { CardBody, CardContainer, CardFooter, CardHeader } from './Card.styled.jsx';
 import TextLimit from './TextLimit';
+import { Link } from 'react-router-dom';
 
-export default function Card({ title, text, banner, likes, comments, top }) {
+export default function Card({ id, title, text, banner, likes, comments, top, actions=false }) {
     return (
         <CardContainer>
             <CardBody>
@@ -20,6 +21,7 @@ export default function Card({ title, text, banner, likes, comments, top }) {
                             <i><MessageCircle /></i>
                             <span>{comments?.length}</span>
                         </section>
+                        {actions && <i className='edit'><Link to={`/manage-news/edit/${id}`}><Edit/></Link></i>}
                     </CardFooter>
                 </div>
                 <img src={banner} alt="Imagem" />

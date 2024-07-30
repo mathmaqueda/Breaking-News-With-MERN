@@ -4,6 +4,7 @@ import { ProfileActions, ProfileAvatar, ProfileBackground, ProfileContainer, Pro
 import { Edit, PlusCircle } from "lucide-react";
 import { getAllNewsByUser } from "../../services/news.services";
 import Card from "../../components/Card";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
     const { user } = useContext(UserContext);
@@ -38,9 +39,11 @@ export default function Profile() {
                 </ProfileUser>
 
                 <ProfileActions>
-                    <ProfileIconAdd>
-                        <PlusCircle />
-                    </ProfileIconAdd>
+                    <Link to="/manage-news/add/news">
+                        <ProfileIconAdd>
+                            <PlusCircle />
+                        </ProfileIconAdd>
+                    </Link>
                 </ProfileActions>
             </ProfileHeader>
 
@@ -52,12 +55,14 @@ export default function Profile() {
                     return (
                         <Card
                             key={item.id}
+                            id={item.id}
                             title={item.title}
                             text={item.text}
                             banner={item.banner}
                             background={item.background}
                             likes={item.likes}
                             comments={item.comments}
+                            actions={true}
                         />
                     );
                 })}
