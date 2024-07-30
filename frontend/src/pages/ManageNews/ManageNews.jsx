@@ -2,14 +2,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddNewsContainer } from "./ManageNews.styled";
 import { useForm } from "react-hook-form";
-import { createNews } from "../../services/news.services";
+import { createNews, getNewsById } from "../../services/news.services";
 import Input from "../../components/Input";
 import { ErrorSpan } from "../../components/Navbar.styled";
 import Button from "../../components/Button";
 import { newsSchema } from "../../Schemas/newsSchema";
+import { useEffect } from "react";
 
 export default function ManageNews() {
-    const { action } = useParams();
+    const { action, id } = useParams();
     const navigate = useNavigate();
 
     const {
@@ -35,6 +36,22 @@ export default function ManageNews() {
         //     console.log(error);
         // }
     }
+
+    async function findNewsById(id) {
+        try {
+            console.log(id)
+            const {data} = await getNewsById(id);
+            console.log(data.news);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        if (action === "edit") {
+            findNewsById(id);
+        }
+    }, [])
 
     return (
         <AddNewsContainer>

@@ -3,14 +3,17 @@ import userService from '../services/user.service.js';
 import {findByIdService} from '../services/news.service.js';
 
 export const validId = (req, res, next) => {
-    const id = req.params;
+    const ids = Object.values(req.params);
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send({ message: "Invalid ID" });
+    for (const id of ids) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ message: "Invalid ID" });
+        }
     }
 
     next();
 };
+
 
 export const validUser = async (req, res, next) => {
     const id = req.params.id;

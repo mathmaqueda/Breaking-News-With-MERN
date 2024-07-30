@@ -16,11 +16,11 @@ newsRouter.get("/byUser", byUser);
 
 newsRouter.use(validId);
 newsRouter.get("/:newsId", findById);
-newsRouter.patch("/:id", validAuthenticatedUser, update);
-newsRouter.delete("/:id", validAuthenticatedUser, erase);
-newsRouter.patch("/like/:id", likeNews);
-newsRouter.patch("/comment/:id", addComment);
-newsRouter.patch("/comment/:id/:idComment", deleteComment);
+newsRouter.patch("/:newsId", validAuthenticatedUser, update);
+newsRouter.delete("/:newsId", validAuthenticatedUser, erase);
+newsRouter.patch("/like/:newsId", likeNews);
+newsRouter.patch("/comment/:newsId", addComment);
+newsRouter.patch("/comment/:newsId/:idComment", deleteComment);
 // quando a rota tem parâmetro, tem que ficar por último
 
 export default newsRouter;

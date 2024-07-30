@@ -7,7 +7,7 @@ export default function Input({ type, placeholder, name, isInput = true, registe
         type,
         placeholder,
         ...register(name),
-        onchange: (e) => setValue(e.target.value)
+        onChange: (e) => setValue(e.target.value)
     };
     if (value) inputProps.value = value;
 

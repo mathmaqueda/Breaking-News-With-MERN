@@ -36,3 +36,12 @@ export function createNews(body) {
     });
     return res;
 }
+
+export function getNewsById(id) {
+    const res = axios.get(`${baseURL}/news/${id}`, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}

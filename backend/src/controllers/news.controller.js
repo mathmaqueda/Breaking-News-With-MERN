@@ -174,7 +174,7 @@ export const byUser = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const id = req.id;
+        const id = req.newsId;
         const { title, text, banner } = req.body;
 
         if (!title && !text && !banner) {
@@ -197,7 +197,7 @@ export const update = async (req, res) => {
 
 export const erase = async (req, res) => {
     try {
-        const id = req.id;
+        const id = req.newsId;
 
         await eraseService(id);
 
@@ -209,7 +209,7 @@ export const erase = async (req, res) => {
 
 export const likeNews = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { newsId } = req.params;
         const userId = req.userId;
 
         const newsLiked = await likeNewsService(id, userId);
@@ -227,7 +227,7 @@ export const likeNews = async (req, res) => {
 
 export const addComment = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { newsId } = req.params;
         const userId = req.userId;
         const {comment} = req.body;
 
@@ -245,7 +245,7 @@ export const addComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
     try {
-        const { id, idComment } = req.params;
+        const { newsId, idComment } = req.params;
         const userId = req.userId;
 
         const commentDeleted = await deleteCommentService(id, idComment, userId);
