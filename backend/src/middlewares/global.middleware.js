@@ -31,7 +31,7 @@ export const validUser = async (req, res, next) => {
 };
 
 export const validAuthenticatedUser = async (req, res, next) => {
-    const id = req.params.id;
+    const id = req.params.newsId;
 
     const news = await findByIdService(id);
  

@@ -24,12 +24,20 @@ export function getAllNewsByUser() {
             Authorization: `Bearer ${Cookies.get('token')}`
         }
     });
-    console.log(res);
     return res;
 }
 
 export function createNews(body) {
     const res = axios.post(`${baseURL}/news`, body, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
+export function editNews(body, id) {
+    const res = axios.patch(`${baseURL}/news/${id}`, body, {
         headers: {
             Authorization: `Bearer ${Cookies.get('token')}`
         }

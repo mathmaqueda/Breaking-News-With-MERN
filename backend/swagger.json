@@ -423,7 +423,7 @@
             }
         },
         "/news/{newsId}/": {
-            "patch": {
+            "get": {
                 "summary": "Search news by id",
                 "description": "Route responsible for fetching news by id",
                 "tags": [

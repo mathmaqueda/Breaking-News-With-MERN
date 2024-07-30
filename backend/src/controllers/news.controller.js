@@ -174,17 +174,11 @@ export const byUser = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const id = req.newsId;
+        const id = req.id;
         const { title, text, banner } = req.body;
 
         if (!title && !text && !banner) {
             res.status(400).send({ message: "Submit all fields for update" });
-        }
-
-        const news = await findByIdService(id);
-
-        if (String(news.user._id) !== req.userId) {
-            return res.status(400).send({ message: "You can't update this post." });
         }
 
         await updateService(id, title, text, banner);
@@ -197,7 +191,7 @@ export const update = async (req, res) => {
 
 export const erase = async (req, res) => {
     try {
-        const id = req.newsId;
+        const id = req.id;
 
         await eraseService(id);
 

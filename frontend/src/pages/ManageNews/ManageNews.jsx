@@ -1,13 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddNewsContainer } from "./ManageNews.styled";
+import { newsSchema } from "../../Schemas/newsSchema.js";
+import {
+    createNews,
+    editNews,
+    getNewsById,
+} from "../../services/news.services";
 import { useForm } from "react-hook-form";
-import { createNews, getNewsById } from "../../services/news.services";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../components/Input";
-import { ErrorSpan } from "../../components/Navbar.styled";
 import Button from "../../components/Button";
-import { newsSchema } from "../../Schemas/newsSchema";
 import { useEffect } from "react";
+import { ErrorSpan } from "../../components/Navbar.styled";
 
 export default function ManageNews() {
     const { action, id } = useParams();
@@ -17,6 +21,7 @@ export default function ManageNews() {
         register: registerNews,
         handleSubmit: handleRegisterNews,
         formState: { errors: errorsRegisterNews },
+        setValue,
     } = useForm({ resolver: zodResolver(newsSchema) });
 
     async function registerNewsSubmit(data) {
@@ -28,45 +33,66 @@ export default function ManageNews() {
         }
     }
 
-    async function editNewsSubmit() {
-        // try {
-        //     await editNews(data);
-        //     Navigate("/profile");
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    }
-
-    async function findNewsById(id) {
+    async function editNewsSubmit(data) {
         try {
-            console.log(id)
-            const {data} = await getNewsById(id);
-            console.log(data.news);
+            await editNews(data, id);
+            navigate("/profile");
         } catch (error) {
             console.log(error);
         }
     }
 
+    async function findNewsById(id) {
+        try {
+            const { data } = await getNewsById(id);
+            setValue("title", data.news.title);
+            setValue("banner", data.news.banner);
+            setValue("text", data.news.text);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function deleteNewsSubmit() {
+        // try {
+        //     await deleteNews(id);
+        //     navigate("/profile");
+        // } catch (error) {
+        //     console.log(error);
+        // }
+    }
+
     useEffect(() => {
-        if (action === "edit") {
+        if (action === "edit" || action === "delete") {
             findNewsById(id);
         }
-    }, [])
+    }, []);
 
     return (
         <AddNewsContainer>
-            <h2>{action == "add" ? "Adicionar" : "Atualizar"} Notícia</h2>
-            <form onSubmit={
-                action == "add"
-                    ? handleRegisterNews(registerNewsSubmit)
-                    : handleRegisterNews(editNewsSubmit)
-            }>
+            <h2>
+                {action === "add"
+                    ? "Adicionar"
+                    : action === "edit"
+                        ? "Atualizar"
+                        : "Apagar"}{" "}
+                Notícia
+            </h2>
+            <form
+                onSubmit={
+                    action == "add"
+                        ? handleRegisterNews(registerNewsSubmit)
+                        : action === "edit"
+                            ? handleRegisterNews(editNewsSubmit)
+                            : handleRegisterNews(deleteNewsSubmit)
+                }
+            >
                 <Input
                     type="text"
-                    placeholder="Título"
+                    placeholder="Titulo"
                     name="title"
                     register={registerNews}
-                    value={action !== "add" ? "title" : ""}
+                    disabled={action === "delete"}
                 />
                 {errorsRegisterNews.title && (
                     <ErrorSpan>{errorsRegisterNews.title.message}</ErrorSpan>
@@ -76,7 +102,7 @@ export default function ManageNews() {
                     placeholder="Link da imagem"
                     name="banner"
                     register={registerNews}
-                    value={action !== "add" ? "banner" : ""}
+                    disabled={action === "delete"}
                 />
                 {errorsRegisterNews.banner && (
                     <ErrorSpan>{errorsRegisterNews.banner.message}</ErrorSpan>
@@ -87,13 +113,22 @@ export default function ManageNews() {
                     name="text"
                     register={registerNews}
                     isInput={false}
-                    value={action !== "add" ? "text" : ""}
+                    disabled={action === "delete"}
                 />
                 {errorsRegisterNews.text && (
                     <ErrorSpan>{errorsRegisterNews.text.message}</ErrorSpan>
                 )}
 
-                <Button type="submit" text={action === "add" ? "Adicionar" : "Atualizar"} />
+                <Button
+                    type="submit"
+                    text={
+                        action === "add"
+                            ? "Adicionar"
+                            : action === "edit"
+                                ? "Atualizar"
+                                : "Apagar"
+                    }
+                />
             </form>
         </AddNewsContainer>
     );
