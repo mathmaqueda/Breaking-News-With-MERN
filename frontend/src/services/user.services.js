@@ -32,5 +32,5 @@ export function userLogged() {
 function generateUserName(name) {
     const withoutSpaces = name.replace(/\s/g, "").toLowerCase();
     const randomNumber = Math.floor(Math.random() * 1000);
-    return `${withoutSpaces}-${randomNumber}`;
+    return `@${withoutSpaces}${randomNumber}`;
 }

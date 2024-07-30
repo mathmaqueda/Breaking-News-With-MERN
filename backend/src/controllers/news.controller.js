@@ -99,9 +99,9 @@ export const topNews = async (req, res) => {
 
 export const findById = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { newsId } = req.params;
 
-        const news = await findByIdService(id);
+        const news = await findByIdService(newsId);
 
         return res.send({
             news: {

@@ -11,11 +11,11 @@ newsRouter.get("/top", topNews);
 newsRouter.get("/search", searchByTitle);
 
 newsRouter.use(authMiddleware);
-newsRouter.post('/', authMiddleware, create);
+newsRouter.post('/', create);
+newsRouter.get("/byUser", byUser);
 
 newsRouter.use(validId);
-newsRouter.get("/byUser", byUser);
-newsRouter.get("/:id", findById);
+newsRouter.get("/:newsId", findById);
 newsRouter.patch("/:id", validAuthenticatedUser, update);
 newsRouter.delete("/:id", validAuthenticatedUser, erase);
 newsRouter.patch("/like/:id", likeNews);

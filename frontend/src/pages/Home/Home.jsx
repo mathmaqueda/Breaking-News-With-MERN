@@ -33,8 +33,8 @@ export default function Home() {
                 />
             </HomeHeader>
             <HomeBody>
-                {news.map((item) => {
-                    return <Card
+                {news.slice(1).map((item) => (
+                    <Card
                         key={item.id}
                         title={item.title}
                         text={item.text}
@@ -42,7 +42,7 @@ export default function Home() {
                         likes={item.likes}
                         comments={item.comments}
                     />
-                })}
+                ))}
             </HomeBody>
         </>
     );

@@ -389,10 +389,15 @@
         },
         "/news/byUser": {
             "get": {
-                "summary": "Search news by use id",
-                "description": "Route responsible for fetching news by use id",
+                "summary": "Search news by user id",
+                "description": "Route responsible for fetching news by user id",
                 "tags": [
                     "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ],
                 "responses": {
                     "400": {
@@ -417,7 +422,7 @@
                 }
             }
         },
-        "/news/{id}/": {
+        "/news/{newsId}/": {
             "patch": {
                 "summary": "Search news by id",
                 "description": "Route responsible for fetching news by id",

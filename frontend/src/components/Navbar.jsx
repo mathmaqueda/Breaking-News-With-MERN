@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../assets/img/LogoBN.png';
@@ -10,15 +10,14 @@ import { userLogged } from '../services/user.services.js';
 import Button from './Button.jsx';
 import { ErrorSpan, ImageLogo, InputSpace, Nav, UserLoggedSpace } from './Navbar.styled.jsx';
 import { LogOut } from 'lucide-react';
+import { UserContext } from '../Context/UserContext.jsx';
 
 export default function Navbar() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: zodResolver(searchSchema)
     });
-
     const navigate = useNavigate();
-
-    const [user, setUser] = useState({});
+    const { user, setUser } = useContext(UserContext);
 
     function onSearch(data) {
         const { title } = data;
@@ -73,10 +72,10 @@ export default function Navbar() {
 
                 {user ? (
                     <UserLoggedSpace>
-                        <Link to="/profile">
+                        <Link to="/profile" style={{ textDecoration: 'none' }}>
                             <h2>{user.name}</h2>
                         </Link>
-                        <i onClick={signout}><LogOut/></i>
+                        <i onClick={signout}><LogOut /></i>
                     </UserLoggedSpace>
                 ) : (
                     <Link to="/auth">
