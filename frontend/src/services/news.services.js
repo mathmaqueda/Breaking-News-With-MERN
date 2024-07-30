@@ -45,6 +45,15 @@ export function editNews(body, id) {
     return res;
 }
 
+export function deleteNews(id) {
+    const res = axios.delete(`${baseURL}/news/${id}`, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
 export function getNewsById(id) {
     const res = axios.get(`${baseURL}/news/${id}`, {
         headers: {

@@ -3,6 +3,7 @@ import { AddNewsContainer } from "./ManageNews.styled";
 import { newsSchema } from "../../Schemas/newsSchema.js";
 import {
     createNews,
+    deleteNews,
     editNews,
     getNewsById,
 } from "../../services/news.services";
@@ -54,12 +55,16 @@ export default function ManageNews() {
     }
 
     async function deleteNewsSubmit() {
-        // try {
-        //     await deleteNews(id);
-        //     navigate("/profile");
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        const isConfirmed = window.confirm("Tem certeza de que deseja apagar esta notícia?");
+
+        if (isConfirmed) {
+            try {
+                await deleteNews(id);
+                navigate("/profile");
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 
     useEffect(() => {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { InputSpace, TextareaSpace } from "./Input.styled";
 
-export default function Input({ type, placeholder, name, isInput = true, register, value: initialValue }) {
-    const [value, setValue] = useState(initialValue || "");
+export default function Input({ type, placeholder, name, isInput = true, register, value: initialValue, disabled = false }) {
+    const [value, setValue] = useState(initialValue);
 
     useEffect(() => {
         if (initialValue !== undefined) {
@@ -15,6 +15,7 @@ export default function Input({ type, placeholder, name, isInput = true, registe
         placeholder,
         ...register(name),
         value,
+        disabled,
         onChange: (e) => setValue(e.target.value),
     };
 

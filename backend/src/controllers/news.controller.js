@@ -203,7 +203,6 @@ export const erase = async (req, res) => {
 
 export const likeNews = async (req, res) => {
     try {
-        const { newsId } = req.params;
         const userId = req.userId;
 
         const newsLiked = await likeNewsService(id, userId);
@@ -239,7 +238,7 @@ export const addComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
     try {
-        const { newsId, idComment } = req.params;
+        const { idComment } = req.params;
         const userId = req.userId;
 
         const commentDeleted = await deleteCommentService(id, idComment, userId);
