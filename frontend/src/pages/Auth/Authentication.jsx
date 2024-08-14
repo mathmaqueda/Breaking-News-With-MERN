@@ -3,20 +3,26 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { AuthContainer, Section } from "./Authentication.styled";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ErrorSpan } from "../../components/Navbar.styled";
+import { ResponseSpan } from "../../components/Navbar.styled";
 import { signinSchema } from "../../Schemas/signinSchema";
 import { signupSchema } from "../../Schemas/signupSchema";
 import { signin, signup } from "../../services/user.services";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 export default function Authentication() {
+    const [loginFailure, setLoginFailure] = useState(false);
     const {
         register: registerSignin,
         handleSubmit: handleSubmitSignin,
         formState: { errors: errorsSignin }
     } = useForm({
-        resolver: zodResolver(signinSchema)
+        resolver: zodResolver(signinSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        }
     });
 
     const {
@@ -24,7 +30,13 @@ export default function Authentication() {
         handleSubmit: handleSubmitSignup,
         formState: { errors: errorsSignup }
     } = useForm({
-        resolver: zodResolver(signupSchema)
+        resolver: zodResolver(signupSchema),
+        defaultValues: {
+           name: "",
+           email: "",
+           password: "",
+           confirmPassword: ""
+        }
     });
 
     async function inHandleSubmit(data) {
@@ -34,7 +46,7 @@ export default function Authentication() {
             Cookies.set("userId", res.data.userId, { expires: 1 });
             navigate("/");
         } catch (err) {
-            console.log(err);
+            setLoginFailure(true);
         }
     }
 
@@ -56,20 +68,21 @@ export default function Authentication() {
             <Section type="signin">
                 <h2>Entrar</h2>
                 <form onSubmit={handleSubmitSignin(inHandleSubmit)}>
+                    {loginFailure && <ResponseSpan>Usuário ou senha incorretos.</ResponseSpan>}
                     <Input
                         type="email"
                         placeholder="E-mail"
                         name="email"
                         register={registerSignin}
                     />
-                    {errorsSignin.email && <ErrorSpan>{errorsSignin.email.message}</ErrorSpan>}
+                    {errorsSignin.email && <ResponseSpan>{errorsSignin.email.message}</ResponseSpan>}
                     <Input
                         type="password"
                         placeholder="Senha"
                         name="password"
                         register={registerSignin}
                     />
-                    {errorsSignin.password && <ErrorSpan>{errorsSignin.password.message}</ErrorSpan>}
+                    {errorsSignin.password && <ResponseSpan>{errorsSignin.password.message}</ResponseSpan>}
                     <Button type="submit" text="Entrar"></Button>
                 </form>
             </Section>
@@ -82,28 +95,28 @@ export default function Authentication() {
                         name="name"
                         register={registerSignup}
                     />
-                    {errorsSignup.name && <ErrorSpan>{errorsSignup.name.message}</ErrorSpan>}
+                    {errorsSignup.name && <ResponseSpan>{errorsSignup.name.message}</ResponseSpan>}
                     <Input
                         type="email"
                         placeholder="E-mail"
                         name="email"
                         register={registerSignup}
                     />
-                    {errorsSignup.email && <ErrorSpan>{errorsSignup.email.message}</ErrorSpan>}
+                    {errorsSignup.email && <ResponseSpan>{errorsSignup.email.message}</ResponseSpan>}
                     <Input
                         type="password"
                         placeholder="Senha"
                         name="password"
                         register={registerSignup}
                     />
-                    {errorsSignup.password && <ErrorSpan>{errorsSignup.password.message}</ErrorSpan>}
+                    {errorsSignup.password && <ResponseSpan>{errorsSignup.password.message}</ResponseSpan>}
                     <Input
                         type="password"
                         placeholder="Confirmar senha"
                         name="confirmPassword"
                         register={registerSignup}
                     />
-                    {errorsSignup.confirmPassword && <ErrorSpan>{errorsSignup.confirmPassword.message}</ErrorSpan>}
+                    {errorsSignup.confirmPassword && <ResponseSpan>{errorsSignup.confirmPassword.message}</ResponseSpan>}
                     <Button type="submit" text="Cadastrar"></Button>
                 </form>
             </Section>

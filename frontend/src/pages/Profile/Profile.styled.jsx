@@ -72,7 +72,30 @@ export const ProfileAvatar = styled.img`
 `;
 
 export const ProfileActions = styled.div`
-  padding: 2rem;
+  margin: 2rem;
+  label {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: #0bade3;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  :hover {
+    color: #0a86af;
+  }
+  
+  &:hover {
+    svg {
+      color: #0a86af;
+      font-size: 2.1rem;
+    }
+  }
 `;
 
 export const ProfileIconAdd = styled.div`
@@ -80,13 +103,6 @@ export const ProfileIconAdd = styled.div`
   border-radius: 50%;
   cursor: pointer !important;
   transition: all 0.3s ease-in-out;
-
-  &:hover {
-    svg {
-      color: #0a86af;
-      font-size: 2.1rem;
-    }
-  }
 
   svg {
     color: #0bade3;

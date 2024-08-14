@@ -34,3 +34,30 @@ function generateUserName(name) {
     const randomNumber = Math.floor(Math.random() * 1000);
     return `@${withoutSpaces}${randomNumber}`;
 }
+
+export function editUser(body, id) {
+    const res = axios.patch(`${baseURL}/user/${id}`, body, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
+export function deleteUser(id) {
+    const res = axios.delete(`${baseURL}/user/erase/${id}`, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
+export function editPassword(body, id) {
+    const res = axios.patch(`${baseURL}/user/updatePassword/${id}`, body, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}

@@ -27,7 +27,7 @@ export default function Profile() {
         <ProfileContainer>
             <ProfileHeader>
                 <ProfileIconEdit>
-                    <Edit />
+                    <i className='edit'><Link to={`/manage-user/edit/`}><Edit /></Link></i>
                 </ProfileIconEdit>
 
                 <ProfileBackground src={user.background} alt="" />
@@ -40,9 +40,12 @@ export default function Profile() {
 
                 <ProfileActions>
                     <Link to="/manage-news/add/news">
+                    <label>
                         <ProfileIconAdd>
                             <PlusCircle />
                         </ProfileIconAdd>
+                        <p>Criar notícia</p>
+                    </label>
                     </Link>
                 </ProfileActions>
             </ProfileHeader>

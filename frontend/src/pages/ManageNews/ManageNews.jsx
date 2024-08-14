@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useEffect } from "react";
-import { ErrorSpan } from "../../components/Navbar.styled";
+import { ResponseSpan } from "../../components/Navbar.styled";
 
 export default function ManageNews() {
     const { action, id } = useParams();
@@ -100,7 +100,7 @@ export default function ManageNews() {
                     disabled={action === "delete"}
                 />
                 {errorsRegisterNews.title && (
-                    <ErrorSpan>{errorsRegisterNews.title.message}</ErrorSpan>
+                    <ResponseSpan>{errorsRegisterNews.title.message}</ResponseSpan>
                 )}
                 <Input
                     type="text"
@@ -110,7 +110,7 @@ export default function ManageNews() {
                     disabled={action === "delete"}
                 />
                 {errorsRegisterNews.banner && (
-                    <ErrorSpan>{errorsRegisterNews.banner.message}</ErrorSpan>
+                    <ResponseSpan>{errorsRegisterNews.banner.message}</ResponseSpan>
                 )}
                 <Input
                     type="text"
@@ -121,7 +121,7 @@ export default function ManageNews() {
                     disabled={action === "delete"}
                 />
                 {errorsRegisterNews.text && (
-                    <ErrorSpan>{errorsRegisterNews.text.message}</ErrorSpan>
+                    <ResponseSpan>{errorsRegisterNews.text.message}</ResponseSpan>
                 )}
 
                 <Button

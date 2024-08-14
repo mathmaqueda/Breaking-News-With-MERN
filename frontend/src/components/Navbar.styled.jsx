@@ -62,9 +62,9 @@ export const InputSpace = styled.div`
     }
 `;
 
-export const ErrorSpan = styled.span`
-    background-color: #ffcdcd;
-    color: #9e0000;
+export const ResponseSpan = styled.span`
+    background-color: ${props => props.color === "success" ? "#9bf26cad" : "#ffcdcd"};
+    color: #000;
     padding: 0.5rem;
     display: flex;
     justify-content: center;

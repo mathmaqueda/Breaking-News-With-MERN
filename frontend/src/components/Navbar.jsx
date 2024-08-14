@@ -8,7 +8,7 @@ import logo from '../assets/img/LogoBN.png';
 import { searchSchema } from '../Schemas/searchSchema.js';
 import { userLogged } from '../services/user.services.js';
 import Button from './Button.jsx';
-import { ErrorSpan, ImageLogo, InputSpace, Nav, UserLoggedSpace } from './Navbar.styled.jsx';
+import { ResponseSpan, ImageLogo, InputSpace, Nav, UserLoggedSpace } from './Navbar.styled.jsx';
 import { LogOut } from 'lucide-react';
 import { UserContext } from '../Context/UserContext.jsx';
 
@@ -84,7 +84,7 @@ export default function Navbar() {
                 )}
 
             </Nav>
-            {errors.title && <ErrorSpan>{errors.title.message}</ErrorSpan>}
+            {errors.title && <ResponseSpan>{errors.title.message}</ResponseSpan>}
             <Outlet />
         </>
     );

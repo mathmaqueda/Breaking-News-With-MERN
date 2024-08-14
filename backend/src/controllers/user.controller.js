@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { generateToken } from '../services/auth.service.js';
 import userService from '../services/user.service.js';
 
@@ -66,7 +67,6 @@ const update = async (req, res) => {
             name,
             username,
             email,
-            password,
             avatar,
             background
         );
@@ -77,4 +77,46 @@ const update = async (req, res) => {
     }
 };
 
-export default { create, findAll, findById, update };
+const erase = async (req, res) => {
+    try {
+        const id = req.id;
+
+        await userService.eraseService(id);
+
+        res.status(200).send({ message: "User successfully deleted" });
+    } catch (error) {
+        res.status(500).send({ message: error.message })
+    }
+}
+
+const updatePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).send({ message: "Senha atual e nova senha são necessárias" });
+        }
+
+        const user = await userService.findByIdService(req.id);
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).send({ message: "Senha atual incorreta"});
+        }
+
+        const salt = await bcrypt.genSalt(10); // Gera um salt com 10 rounds
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        await userService.updatePasswordService(req.id, hashedPassword);
+
+        return res.status(200).send({ message: "Senha alterada com sucesso" });
+    } catch (err) {
+        // Log o erro para depuração
+        console.error("Erro ao atualizar a senha:", err);
+
+        // Envie uma resposta de erro genérica
+        return res.status(500).send({ message: "Erro interno do servidor" });
+    } 
+}
+
+export default { create, findAll, findById, update, erase, updatePassword };

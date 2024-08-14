@@ -1,7 +1,7 @@
 import { ButtonSpace } from "./Button.styled";
 
-export default function Button({ type, text }) {
+export default function Button({ type, text, onClick, color }) {
     return (
-        <ButtonSpace type={type}>{text}</ButtonSpace>
+        <ButtonSpace onClick={onClick} color={color} type={type}>{text}</ButtonSpace>
     );
 }

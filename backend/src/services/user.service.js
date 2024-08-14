@@ -14,10 +14,13 @@ const updateService = (
     name,
     username,
     email,
-    password,
     avatar,
     background
-) => User.findOneAndUpdate({ _id: id }, { name, username, password, email, avatar, background })
+) => User.findOneAndUpdate({ _id: id }, { name, username, email, avatar, background })
+
+const updatePasswordService = (id, newPassword) => User.findOneAndUpdate({ _id: id }, {password: newPassword}, {new: true});
+
+const eraseService = (id) => User.findOneAndDelete({ _id: id});
 
 export default {
     findByEmailService,
@@ -25,4 +28,6 @@ export default {
     findAllService,
     findByIdService,
     updateService,
+    updatePasswordService,
+    eraseService,
 };

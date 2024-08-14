@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const ButtonSpace = styled.button`
-    background-color: #0bade3;
+    background-color: ${props => 
+        props.color === "danger" ? "#cc3300" : 
+        props.color === "warning" ? "#ffcc00" : "#0bade3"};
     border: none;
     outline: none;
     font-size: 1rem;
@@ -16,6 +18,8 @@ export const ButtonSpace = styled.button`
     text-transform: uppercase;
 
     :hover {
-        background-color: #0a86af;
+        background-color: ${props => 
+            props.color === "danger" ? "#b32a00" : 
+            props.color === "warning" ? "#e6b800" : "#0a86af"} !important;
     }
 `;
