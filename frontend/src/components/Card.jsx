@@ -3,9 +3,9 @@ import { CardBody, CardContainer, CardFooter, CardHeader } from './Card.styled.j
 import TextLimit from './TextLimit';
 import { Link } from 'react-router-dom';
 
-export default function Card({ id, title, text, banner, likes, comments, top, actions=false }) {
+export default function Card({ id, title, text, banner, likes, comments, top, onCardClick, onCommentClick, actions = false }) {
     return (
-        <CardContainer>
+        <CardContainer >
             <CardBody>
                 <div>
                     <CardHeader $top={top}>
@@ -13,23 +13,23 @@ export default function Card({ id, title, text, banner, likes, comments, top, ac
                         <TextLimit text={text} limit={top ? 300 : 150} />
                     </CardHeader>
                     <CardFooter>
-                        <section>
+                        <section className="like">
                             <i><Heart /></i>
-                            <span>{likes?.length}</span>
+                            <span>{likes?.length} {likes?.length === 1 ? "Curtida" : "Curtidas"}</span>
                         </section>
-                        <section>
+                        <section className='comment' onClick={onCommentClick}>
                             <i><MessageCircle /></i>
-                            <span>{comments?.length}</span>
+                            <span>{comments?.length} {comments?.length === 1 ? "Comentário" : "Comentários"}</span>
                         </section>
                         {actions && (
                             <>
-                                <i className='edit'><Link to={`/manage-news/edit/${id}`}><Edit/></Link></i>
-                                <i className='edit'><Link to={`/manage-news/delete/${id}`}><Trash2/></Link></i>
+                                <i className='edit'><Link to={`/manage-news/edit/${id}`}><Edit /></Link></i>
+                                <i className='edit'><Link to={`/manage-news/delete/${id}`}><Trash2 /></Link></i>
                             </>
                         )}
                     </CardFooter>
                 </div>
-                <img src={banner} alt="Imagem" />
+                <img src={banner} alt="Imagem" onClick={onCardClick} />
             </CardBody>
         </CardContainer>
     );

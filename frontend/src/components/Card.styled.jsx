@@ -67,9 +67,22 @@ export const CardFooter = styled.article`
     gap: 1rem;
 
     section {
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .like:hover {
+      i {
+          color: red;
+      }
+    }
+
+    .comment:hover {
+      i {
+          color: #0bade3;
+      }
     }
 
     i.edit {

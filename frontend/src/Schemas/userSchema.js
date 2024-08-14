@@ -36,3 +36,12 @@ export const passwordSchema = z.object({
   message: "As senhas não correspondem",
   path: ["confirmPassword"],
 });
+
+export const commentSchema = z.object({
+  comment: z
+    .string()
+    .min(1, { message: "O comentário não pode ser vazio" })
+    .refine((value) => !/^\s*$/.test(value), {
+      message: "O comentário não pode ter apenas espaços",
+    }),
+})

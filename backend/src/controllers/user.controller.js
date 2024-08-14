@@ -46,7 +46,7 @@ const findAll = async (req, res) => {
 const findById = async (req, res) => {
     try {
         const user = req.user;
-        res.status(200).send(user);
+        return res.status(200).send(user);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
