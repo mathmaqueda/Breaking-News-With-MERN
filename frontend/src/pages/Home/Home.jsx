@@ -38,24 +38,28 @@ export default function Home() {
     return (
         <>
             <HomeHeader>
-                <Card
-                    top={true}
-                    id={topNews.id}
-                    title={topNews.title}
-                    text={topNews.text}
-                    banner={topNews.banner}
-                    likes={topNews.likes}
-                    comments={topNews.comments}
-                    onCardClick={() => openNewsModal(topNews, false)}
-                    liked={
-                        Array.isArray(topNews.likes) &&
-                        topNews.likes.find(like => like.userId === userLogged) 
-                            ? true 
-                            : false
-                    }
-                    fetchFunction={findNews}
-                    onCommentClick={() => openNewsModal(topNews, true)}
-                />
+                {topNews.length > 0 ? (
+                    <Card
+                        top={true}
+                        id={topNews.id}
+                        title={topNews.title}
+                        text={topNews.text}
+                        banner={topNews.banner}
+                        likes={topNews.likes}
+                        comments={topNews.comments}
+                        onCardClick={() => openNewsModal(topNews, false)}
+                        liked={
+                            Array.isArray(topNews.likes) &&
+                            topNews.likes.find(like => like.userId === userLogged) 
+                                ? true 
+                                : false
+                        }
+                        fetchFunction={findNews}
+                        onCommentClick={() => openNewsModal(topNews, true)}
+                    />
+                ) : (
+                    <h1>Não há postagens</h1>
+                )}
             </HomeHeader>
             <HomeBody>
                 {news.slice(1).map((item) => (
