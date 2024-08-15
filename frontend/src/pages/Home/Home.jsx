@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Card from "../../components/Card";
-import { getAllNews, getTopNews, likeOrDislike } from "../../services/news.services";
+import { getAllNews, getTopNews } from "../../services/news.services";
 import { HomeBody, HomeHeader } from "./Home.styled";
 import NewsModal from '../../components/NewsModal';
 import Cookies from "js-cookie";
@@ -31,23 +31,6 @@ export default function Home() {
         setTopNews(topNewsResponse.data.news);
     }
 
-    async function handleLikeOrDislike(newsId) {
-        try {
-            if (!Cookies.get("token")) {
-                window.alert("Faça login para curtir ou comentar.");
-                return
-            }
-            await likeOrDislike(newsId);
-            findNews();
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                window.alert(error.response.data);
-            } else {
-                console.error("Erro ao curtir:", error);
-            }
-        }
-    }
-
     useEffect(() => {
         findNews();
     }, []);
@@ -57,19 +40,20 @@ export default function Home() {
             <HomeHeader>
                 <Card
                     top={true}
+                    id={topNews.id}
                     title={topNews.title}
                     text={topNews.text}
                     banner={topNews.banner}
                     likes={topNews.likes}
                     comments={topNews.comments}
                     onCardClick={() => openNewsModal(topNews, false)}
-                    onLikeClick={() => handleLikeOrDislike(topNews.id)}
                     liked={
                         Array.isArray(topNews.likes) &&
                         topNews.likes.find(like => like.userId === userLogged) 
                             ? true 
                             : false
                     }
+                    fetchFunction={findNews}
                     onCommentClick={() => openNewsModal(topNews, true)}
                 />
             </HomeHeader>
@@ -83,13 +67,13 @@ export default function Home() {
                         likes={item.likes}
                         comments={item.comments}
                         onCardClick={() => openNewsModal(item, false)}
-                        onLikeClick={() => handleLikeOrDislike(item.id)}
                         liked={
                             Array.isArray(item.likes) &&
                             item.likes.find(like => like.userId === userLogged) 
                                 ? true 
                                 : false
                         }
+                        fetchFunction={findNews}
                         onCommentClick={() => openNewsModal(item, true)}
                     />
                 ))}

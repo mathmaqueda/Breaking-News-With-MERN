@@ -53,7 +53,7 @@ export default function NewsModal({ updateNews, news, isOpen, closeNewsModal, sc
                 }
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    window.alert("Você não tem autorização para curtir esta postagem.");
+                    window.alert(error.response.data.message);
                 } else {
                     console.error("Erro ao curtir:", error);
                 }

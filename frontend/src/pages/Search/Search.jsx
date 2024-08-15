@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { likeOrDislike, searchNews } from '../../services/news.services';
+import { searchNews } from '../../services/news.services';
 import { useEffect, useState } from 'react';
 import { ContainerResults, SearchNews, TextResults } from './Search.styled';
 import Card from "../../components/Card";
@@ -34,23 +34,6 @@ export default function Search() {
         }
     }
 
-    async function handleLikeOrDislike(newsId) {
-        try {
-            if (!Cookies.get("token")) {
-                window.alert("Faça login para curtir ou comentar.");
-                return
-            }
-            await likeOrDislike(newsId);
-            search();
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                window.alert(error.response.data);
-            } else {
-                console.error("Erro ao curtir:", error);
-            }
-        }
-    }
-
     useEffect(() => {
         search();
     }, [title]);
@@ -70,19 +53,20 @@ export default function Search() {
                 {news.map((item) => {
                     return <Card
                         key={item.id}
+                        id={item.id}
                         title={item.title}
                         text={item.text}
                         banner={item.banner}
                         likes={item.likes}
                         comments={item.comments}
                         onCardClick={() => openNewsModal(item, false)}
-                        onLikeClick={() => handleLikeOrDislike(item.id)}
                         liked={
                             Array.isArray(item.likes) &&
                             item.likes.find(like => like.userId === userLogged) 
                                 ? true 
                                 : false
                         }
+                        fetchFunction={search}
                         onCommentClick={() => openNewsModal(item, true)}
                     />
                 })}
