@@ -1,13 +1,4 @@
 # 🌐 Breaking News
-## Objetivo e Experiêmcia adquirida
-Este foi um projeto desenvolvido para aprofundar meus conhecimentos em MERN stack. Após ter estudado somente React, fui capaz de aprender o desenvolvimento e consumo de uma API com React. Aprendi também fundamentos muito importantes sobre Express, que facilita muito o trabalho e a organização do backend. Estou sempre tentando aplicar o máximo de técnicas de clean-code que consigo, para aperfeiçoar essa prática e facilitar o trabalho de quem lidar com o meu código.
-
-## Referência
-A maioria do projeto foi desenvolvida em um curso de MERN stack. Eu o completei e aproximei ao meu gosto.
-
-Link: https://www.youtube.com/playlist?list=PLR8JXremim5BaPqraGKBPS4rFhywgUAvz (Acesso em: 15/08/2024)
-
-# 🌐 Breaking News
 
 ## Descrição do Projeto
 **Breaking News** é um projeto desenvolvido com o objetivo de consolidar e expandir meus conhecimentos na MERN stack (MongoDB, Express, React, Node.js). Trata-se de uma aplicação que simula um portal de notícias, permitindo a criação, leitura, atualização e exclusão (CRUD) de notícias em tempo real. 
