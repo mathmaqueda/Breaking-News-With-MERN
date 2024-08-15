@@ -16,10 +16,4 @@ export const ButtonSpace = styled.button`
     font-weight: 500;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
-
-    :hover {
-        background-color: ${props => 
-            props.color === "danger" ? "#b32a00" : 
-            props.color === "warning" ? "#e6b800" : "#0a86af"} !important;
-    }
 `;

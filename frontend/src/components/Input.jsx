@@ -1,22 +1,12 @@
-import { useState, useEffect } from "react";
 import { InputSpace, TextareaSpace } from "./Input.styled";
 
-export default function Input({ type, placeholder, name, isInput = true, register, value: initialValue, disabled = false }) {
-    const [value, setValue] = useState(initialValue);
-
-    useEffect(() => {
-        if (initialValue !== undefined) {
-            setValue(initialValue);
-        }
-    }, [initialValue]);
-
+export default function Input({ type, setValue, placeholder, name, isInput = true, register, disabled = false }) {
     let inputProps = {
         type,
         placeholder,
         ...register(name),
-        value,
         disabled,
-        onChange: (e) => setValue(e.target.value),
+        onInput: (event) => setValue(event.target.value)
     };
 
     return (

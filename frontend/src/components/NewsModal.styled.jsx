@@ -100,10 +100,11 @@ export const Comments = styled.div`
     div {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: space-between;
         border: 1px solid #ccc;
         border-radius: 8px;
         padding: 0.5rem;
+        margin-bottom: 1rem;
 
         p strong {
             font-size: 1rem;
@@ -112,6 +113,7 @@ export const Comments = styled.div`
 
         p {
             font-size: 0.9rem;
+            width: 100%;
         }
     }
 

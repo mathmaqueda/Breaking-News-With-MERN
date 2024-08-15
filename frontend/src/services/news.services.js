@@ -62,3 +62,32 @@ export function getNewsById(id) {
     });
     return res;
 }
+
+
+
+export function addComment(body, id) {
+    const res = axios.patch(`${baseURL}/news/comment/${id}`, body, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
+export function deleteComment(newsId, commentId) {
+    const res = axios.patch(`${baseURL}/news/comment/${newsId}/${commentId}`, null, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}
+
+export function likeOrDislike(id) {
+    const res = axios.patch(`${baseURL}/news/like/${id}`, null, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+        }
+    });
+    return res;
+}

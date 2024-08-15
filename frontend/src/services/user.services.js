@@ -62,7 +62,7 @@ export function editPassword(body, id) {
     return res;
 }
 
-export async function findUserById(id) {
+export function findUserById(id) {
     const response = axios.get(`${baseURL}/user/${id}`);
     return response;
 }

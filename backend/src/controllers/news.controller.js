@@ -47,7 +47,7 @@ export const findAll = async (req, res) => {
 
         const previous = offset - limit < 0 ? null : offset - limit;
         const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
-        
+
         res.send({
             nextUrl,
             previousUrl,
@@ -203,12 +203,19 @@ export const erase = async (req, res) => {
 
 export const likeNews = async (req, res) => {
     try {
+        const { newsId } = req.params;
         const userId = req.userId;
 
-        const newsLiked = await likeNewsService(id, userId);
+        const newsLikedById = await findByIdService(newsId);
+
+        if (userId === newsLikedById.user.id) {
+            return res.status(401).send({message: "Você não pode curtir a própria postagem"})
+        }
+
+        const newsLiked = await likeNewsService(newsId, userId);
 
         if (!newsLiked) {
-            await deleteLikeNewsService(id, userId);
+            await deleteLikeNewsService(newsId, userId);
             return res.status(200).send({ message: "Disliked" });
         }
 
@@ -222,15 +229,15 @@ export const addComment = async (req, res) => {
     try {
         const { newsId } = req.params;
         const userId = req.userId;
-        const {comment} = req.body;
+        const { comment } = req.body;
 
         if (!comment) {
-            return res.status(400).send({ message: "Write a message to comment" });
+            return res.status(400).send({ message: "O comentário não pode ser vazio" });
         }
 
-        await addCommentService(id, comment, userId);
+        const newComment = await addCommentService({ newsId, comment, userId });
 
-        res.send({ message: "Comment added successfully" });
+        res.send(newComment);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -238,18 +245,23 @@ export const addComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
     try {
-        const { idComment } = req.params;
+        const { newsId, idComment } = req.params;
         const userId = req.userId;
-
-        const commentDeleted = await deleteCommentService(id, idComment, userId);
+        const commentDeleted = await deleteCommentService(newsId, idComment, userId);
 
         const commentFinder = commentDeleted.comments.find(comment => comment.idComment === idComment);
 
-        if (commentFinder.userId !== userId) {
-            return res.status(400).send({ message: "You can't delete this comment" });
+        if (!commentFinder) {
+            return res.status(404).send({ message: "Comment not found" });
         }
 
-        res.send({ message: "Comment deleted successfully" });
+        if (commentFinder.userId !== userId) {
+            return res.status(400).send({ message: "Você não pode deletar esse comentário" });
+        }
+
+        const updatedNews = findByIdService(newsId);
+
+        res.send(updatedNews.comments);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

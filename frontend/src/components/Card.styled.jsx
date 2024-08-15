@@ -62,42 +62,43 @@ export const CardHeader = styled.article`
 `;
 
 export const CardFooter = styled.article`
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  section {
     display: flex;
+    gap: 0.5rem;
     align-items: center;
-    gap: 1rem;
+    cursor: pointer;
+  }
 
-    section {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      cursor: pointer;
+  .like:hover {
+    i {
+        color: red;
     }
+  }
 
-    .like:hover {
-      i {
-          color: red;
-      }
+  .comment:hover {
+    i {
+        color: #0bade3;
     }
+  }
 
-    .comment:hover {
-      i {
-          color: #0bade3;
-      }
-    }
+  i.edit {
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: all 0.3s ease-in-out;
 
-    i.edit {
-      cursor: pointer;
+    a {
+      color: inherit;
       text-decoration: none;
-      border: none;
-      transition: all 0.3s ease-in-out;
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
     }
+  }
 
-    i.edit:hover {
-      color: #0bade3;
-    }
+  i.edit:hover {
+    color: #0bade3;
+  }
 `;

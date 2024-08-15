@@ -43,6 +43,7 @@ export default function ManageUser() {
     const {
         register: registerPassword,
         handleSubmit: handleRegisterPassword,
+        setValue: setPasswordValue,
         formState: { errors: errorsPassword }
     } = useForm({
         resolver: zodResolver(passwordSchema),
@@ -54,7 +55,6 @@ export default function ManageUser() {
     });
 
     async function editUserSubmit(data) {
-        console.log("edit user")
         try {
             await editUser(data, Cookies.get('userId'));
             const res = await userLogged();
@@ -138,6 +138,7 @@ export default function ManageUser() {
                         type="text"
                         placeholder="Nome"
                         name="name"
+                        setValue={setValue}
                         register={registerUser}
                     />
                 </LabeledInputs>
@@ -150,6 +151,7 @@ export default function ManageUser() {
                         type="text"
                         placeholder="Nome de usuário"
                         name="username"
+                        setValue={setValue}
                         register={registerUser}
                     />
                 </LabeledInputs>
@@ -162,6 +164,7 @@ export default function ManageUser() {
                         type="text"
                         placeholder="E-mail"
                         name="email"
+                        setValue={setValue}
                         register={registerUser}
                     />
                 </LabeledInputs>
@@ -179,6 +182,7 @@ export default function ManageUser() {
                         type="text"
                         placeholder="Avatar do perfil"
                         name="avatar"
+                        setValue={setValue}
                         register={registerUser}
                     />
                 </LabeledInputs>
@@ -191,6 +195,7 @@ export default function ManageUser() {
                         type="text"
                         placeholder="Imagem de fundo"
                         name="background"
+                        setValue={setValue}
                         register={registerUser}
                     />
                 </LabeledInputs>
@@ -226,6 +231,7 @@ export default function ManageUser() {
                                 type="password"
                                 placeholder="Senha atual"
                                 name="currentPassword"
+                                setValue={setPasswordValue}
                                 register={registerPassword}
                             />
                         </LabeledInputs>
@@ -237,6 +243,7 @@ export default function ManageUser() {
                                 type="password"
                                 placeholder="Senha nova"
                                 name="newPassword"
+                                setValue={setPasswordValue}
                                 register={registerPassword}
                             />
                         </LabeledInputs>
@@ -248,6 +255,7 @@ export default function ManageUser() {
                                 type="password"
                                 placeholder="Confirmar senha nova"
                                 name="confirmNewPassword"
+                                setValue={setPasswordValue}
                                 register={registerPassword}
                             />
                         </LabeledInputs>

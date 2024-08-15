@@ -1,4 +1,5 @@
 import News from '../models/News.js';
+import User from '../models/User.js';
 
 // export sem default manda desestruturado
 const createService = (body) => News.create(body);
@@ -47,22 +48,34 @@ const deleteLikeNewsService = (idNews, userId) =>
         { $pull: { likes: { userId } } }
     );
 
-const addCommentService = (idNews, comment, userId) => {
+const addCommentService = async ({newsId, comment, userId}) => {
     const idComment = Math.floor(Date.now() * Math.random()).toString(36);
-    return News.findOneAndUpdate({ _id: idNews },
-        {
-            $push: {
-                comments: { idComment, userId, comment, createdAt: new Date() }
-            }
-        }
+    const newComment = {
+        idComment, // Gere um novo ObjectId para o comentário
+        comment,
+        userId,
+        createdAt: new Date(),
+    };
+
+    await News.findOneAndUpdate(
+        { _id: newsId }, // Use `newsId` diretamente aqui
+        { $push: { comments: newComment } }
     );
+
+    const user = await User.findById(userId);
+
+    return {
+        ...newComment,
+        username: user.username,
+    };
 }
 
-const deleteCommentService = (idNews, idComment, userId) =>
-    News.findOneAndUpdate(
-        { _id: idNews },
+const deleteCommentService = async (newsId, idComment, userId) => {
+    return await News.findOneAndUpdate(
+        { _id: newsId },
         { $pull: { comments: { idComment, userId } } }
     );
+}
 
 export {
     createService,

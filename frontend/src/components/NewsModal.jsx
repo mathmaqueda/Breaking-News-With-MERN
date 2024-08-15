@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, SendHorizontal, X } from "lucide-react";
+import { Heart, HeartOff, MessageCircle, SendHorizontal, Trash2, X } from "lucide-react";
 import { Comments, ModalContainer, ModalContent, NewsBody, NewsStatus } from "./NewsModal.styled";
 import { useEffect, useRef, useState } from "react";
 import { findUserById } from "../services/user.services";
@@ -6,47 +6,115 @@ import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "../Schemas/userSchema.js";
+import { commentSchema } from "../Schemas/userSchema.js";
 import { ResponseSpan } from "./Navbar.styled.jsx";
+import { addComment, deleteComment, getNewsById, likeOrDislike } from "../services/news.services.js";
+import Cookies from "js-cookie";
 
-export default function NewsModal({ news, isOpen, closeNewsModal, scrollToComments }) {
+export default function NewsModal({ updateNews, news, isOpen, closeNewsModal, scrollToComments, profile = false }) {
     const [commentUsers, setCommentUsers] = useState([]);
     const modalRef = useRef();
     const commentsRef = useRef();
+    const userLogged = Cookies.get("userId");
+    const [localNews, setLocalNews] = useState(news);
+    const [liked, setLiked] = useState(Array.isArray(localNews.likes) &&
+        localNews.likes.find(like => like.userId === userLogged)
+        ? true
+        : false);
 
     const {
         register: registerComment,
         handleSubmit: handleregisterComment,
+        reset,
+        setValue,
         formState: { errors: errorsComment }
     } = useForm({
-        resolver: zodResolver(userSchema),
+        resolver: zodResolver(commentSchema),
+        defaultValues: {
+            comment: "",
+        }
     });
 
-    async function createCommentSubmit() {
+    async function handleLikeOrDislike() {
+        if (!profile) {
+            try {
+                if (!Cookies.get("token")) {
+                    window.alert("Faça login para curtir ou comentar.");
+                    return
+                }
 
+                const response = await likeOrDislike(localNews.id);
+                fetchAndUpdateNewsData();
+
+                if (response.data.message === "Liked") {
+                    setLiked(true);
+                } else if (response.data.message === "Disliked") {
+                    setLiked(false);
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    window.alert("Você não tem autorização para curtir esta postagem.");
+                } else {
+                    console.error("Erro ao curtir:", error);
+                }
+            }
+        }
     }
 
-    useEffect(() => {
-        const fetchCommentsWithUsers = async () => {
-            try {
-                const comments = await Promise.all(
-                    news.comments.map(async (commentItem) => {
-                        const { data } = await findUserById(commentItem.userId);
-                        return {
-                            ...commentItem,
-                            username: data.username,
-                        };
-                    })
-                );
-                setCommentUsers(comments);
-            } catch (error) {
-                console.error("Erro ao buscar usuários para comentários:", error);
+    async function addCommentSubmit(body) {
+        try {
+            if (!Cookies.get("token")) {
+                window.alert("Faça login para curtir ou comentar.")
+                return;
             }
-        };
+            reset();
+            await addComment(body, localNews.id);
+            await fetchAndUpdateNewsData();
+        } catch (e) {
+            console.error("Erro ao salvar comentário:", e);
+        }
+    }
 
-        fetchCommentsWithUsers();
-    }, [news.comments]);
+    async function deleteCommentSubmit(commentId) {
+        if (window.confirm("Excluir comentário?")) {
+            try {
+                await deleteComment(localNews.id, commentId);
+                await fetchAndUpdateNewsData();
+            } catch (e) {
+                console.error("Erro ao deletar comentário:", e);
+            }
+        }
+    }
 
+    const fetchAndUpdateNewsData = async () => {
+        try {
+            const { data } = await getNewsById(localNews.id);
+            const updatedNews = data.news;
+            updateNews();
+            setLocalNews(updatedNews);
+
+            const comments = await Promise.all(
+                updatedNews.comments.map(async (commentItem) => {
+                    const { data } = await findUserById(commentItem.userId);
+                    return {
+                        ...commentItem,
+                        username: data.username,
+                    };
+                })
+            );
+
+            setCommentUsers(comments);
+        } catch (error) {
+            console.error("Erro ao buscar usuários para comentários:", error);
+        }
+    };
+
+    // get comments with users
+    useEffect(() => {
+        fetchAndUpdateNewsData();
+    }, []);
+
+    // do scroll and closing
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -54,7 +122,6 @@ export default function NewsModal({ news, isOpen, closeNewsModal, scrollToCommen
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
-        console.log(scrollToComments);
         if (isOpen && scrollToComments) {
             commentsRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
@@ -69,21 +136,21 @@ export default function NewsModal({ news, isOpen, closeNewsModal, scrollToCommen
             <ModalContent ref={modalRef} >
                 <i className="close" onClick={closeNewsModal}><X /></i>
                 <NewsBody>
-                    <h2>{news.title}</h2>
-                    <img src={news.banner} />
-                    <p>{news.text}</p>
+                    <h2>{localNews.title}</h2>
+                    <img src={localNews.banner} />
+                    <p>{localNews.text}</p>
                 </NewsBody>
 
                 <hr />
 
                 <NewsStatus>
-                    <section className="like">
-                        <i><Heart /></i>
-                        <span>{news.likes?.length} {news.likes?.length === 1 ? "Curtida" : "Curtidas"}</span>
+                    <section onClick={handleLikeOrDislike} className="like">
+                        <i>{liked ? (<HeartOff />) : (<Heart />)}</i>
+                        <span>{localNews.likes?.length} {localNews.likes?.length === 1 ? "Curtida" : "Curtidas"}</span>
                     </section>
                     <section className="comment">
                         <i><MessageCircle /></i>
-                        <span>{news.comments?.length} {news.comments?.length === 1 ? "Comentário" : "Comentários"}</span>
+                        <span>{localNews.comments?.length} {localNews.comments?.length === 1 ? "Comentário" : "Comentários"}</span>
                     </section>
                 </NewsStatus>
 
@@ -95,26 +162,30 @@ export default function NewsModal({ news, isOpen, closeNewsModal, scrollToCommen
                         commentUsers.map((commentItem) => (
                             <div key={commentItem.idComment}>
                                 <p><strong>{commentItem.username || "Usuário desconhecido"}: </strong>{commentItem.comment}</p>
+                                {commentItem.userId === Cookies.get("userId") && (<Trash2 onClick={() => deleteCommentSubmit(commentItem.idComment)} />)}
                             </div>
                         )) : (
                             <p>Nenhum comentário publicado.</p>
                         )
                     }
-                    <form onSubmit={handleregisterComment(createCommentSubmit)}>
-                        <Input
-                            type="text"
-                            placeholder="Adicione um comentário"
-                            name="comment"
-                            register={registerComment}
-                        />
-                        {errorsComment.comment && (
-                            <ResponseSpan>{errorsComment.comment.message}</ResponseSpan>
-                        )}
-                        <Button
-                            type="submit"
-                            text={<SendHorizontal></SendHorizontal>}
-                        />
-                    </form>
+                    {errorsComment.comment && (
+                        <ResponseSpan>{errorsComment.comment.message}</ResponseSpan>
+                    )}
+                    {!profile && (
+                        <form onSubmit={handleregisterComment(addCommentSubmit)}>
+                            <Input
+                                type="text"
+                                placeholder="Adicione um comentário"
+                                name="comment"
+                                setValue={setValue}
+                                register={registerComment}
+                            />
+                            <Button
+                                type="submit"
+                                text={<SendHorizontal></SendHorizontal>}
+                            />
+                        </form>
+                    )}
                 </Comments>
             </ModalContent>
         </ModalContainer>

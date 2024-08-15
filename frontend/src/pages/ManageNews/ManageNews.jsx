@@ -96,6 +96,7 @@ export default function ManageNews() {
                     type="text"
                     placeholder="Titulo"
                     name="title"
+                    setValue={setValue}
                     register={registerNews}
                     disabled={action === "delete"}
                 />
@@ -106,6 +107,7 @@ export default function ManageNews() {
                     type="text"
                     placeholder="Link da imagem"
                     name="banner"
+                    setValue={setValue}
                     register={registerNews}
                     disabled={action === "delete"}
                 />
@@ -116,6 +118,7 @@ export default function ManageNews() {
                     type="text"
                     placeholder="Texto"
                     name="text"
+                    setValue={setValue}
                     register={registerNews}
                     isInput={false}
                     disabled={action === "delete"}

@@ -22,5 +22,5 @@ newsRouter.patch("/like/:newsId", likeNews);
 newsRouter.patch("/comment/:newsId", addComment);
 newsRouter.patch("/comment/:newsId/:idComment", deleteComment);
 // quando a rota tem parâmetro, tem que ficar por último
-
+ 
 export default newsRouter;

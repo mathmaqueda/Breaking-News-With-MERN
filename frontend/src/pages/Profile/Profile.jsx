@@ -5,10 +5,24 @@ import { Edit, PlusCircle } from "lucide-react";
 import { getAllNewsByUser } from "../../services/news.services";
 import Card from "../../components/Card";
 import { Link } from "react-router-dom";
+import NewsModal from "../../components/NewsModal";
 
 export default function Profile() {
     const { user } = useContext(UserContext);
     const [news, setNews] = useState([]);
+    const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
+    const [selectedNews, setSelectedNews] = useState(null);
+    const [scrollToComments, setScrollToComments] = useState(false);
+
+    function openNewsModal(news, shouldScrollToComments = false) {
+        setScrollToComments(shouldScrollToComments);
+        setSelectedNews(news);
+        setIsNewsModalOpen(true);
+    }
+
+    function closeNewsModal() {
+        setIsNewsModalOpen(false);
+    }
 
     async function findAllNewsByUser() {
         try {
@@ -40,12 +54,12 @@ export default function Profile() {
 
                 <ProfileActions>
                     <Link to="/manage-news/add/news">
-                    <label>
-                        <ProfileIconAdd>
-                            <PlusCircle />
-                        </ProfileIconAdd>
-                        <p>Criar notícia</p>
-                    </label>
+                        <label>
+                            <ProfileIconAdd>
+                                <PlusCircle />
+                            </ProfileIconAdd>
+                            <p>Criar notícia</p>
+                        </label>
                     </Link>
                 </ProfileActions>
             </ProfileHeader>
@@ -65,11 +79,16 @@ export default function Profile() {
                             background={item.background}
                             likes={item.likes}
                             comments={item.comments}
-                            actions={true}
+                            profile={true}
+                            onCardClick={() => openNewsModal(item, false)}
+                            onCommentClick={() => openNewsModal(item, true)}
                         />
                     );
                 })}
             </ProfilePosts>
+            {isNewsModalOpen && (
+                <NewsModal news={selectedNews} isOpen={isNewsModalOpen} scrollToComments={scrollToComments} closeNewsModal={closeNewsModal} profile={true}/>
+            )}
         </ProfileContainer>
     );
 }

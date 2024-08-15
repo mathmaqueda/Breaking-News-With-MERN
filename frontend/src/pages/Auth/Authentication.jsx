@@ -16,6 +16,7 @@ export default function Authentication() {
     const {
         register: registerSignin,
         handleSubmit: handleSubmitSignin,
+        setValue: setSigninValue,
         formState: { errors: errorsSignin }
     } = useForm({
         resolver: zodResolver(signinSchema),
@@ -28,6 +29,7 @@ export default function Authentication() {
     const {
         register: registerSignup,
         handleSubmit: handleSubmitSignup,
+        setValue: setSignupValue,
         formState: { errors: errorsSignup }
     } = useForm({
         resolver: zodResolver(signupSchema),
@@ -74,6 +76,7 @@ export default function Authentication() {
                         placeholder="E-mail"
                         name="email"
                         register={registerSignin}
+                        setValue={setSigninValue}
                     />
                     {errorsSignin.email && <ResponseSpan>{errorsSignin.email.message}</ResponseSpan>}
                     <Input
@@ -81,6 +84,7 @@ export default function Authentication() {
                         placeholder="Senha"
                         name="password"
                         register={registerSignin}
+                        setValue={setSigninValue}
                     />
                     {errorsSignin.password && <ResponseSpan>{errorsSignin.password.message}</ResponseSpan>}
                     <Button type="submit" text="Entrar"></Button>
@@ -94,6 +98,7 @@ export default function Authentication() {
                         placeholder="Nome"
                         name="name"
                         register={registerSignup}
+                        setValue={setSignupValue}
                     />
                     {errorsSignup.name && <ResponseSpan>{errorsSignup.name.message}</ResponseSpan>}
                     <Input
@@ -101,6 +106,7 @@ export default function Authentication() {
                         placeholder="E-mail"
                         name="email"
                         register={registerSignup}
+                        setValue={setSignupValue}
                     />
                     {errorsSignup.email && <ResponseSpan>{errorsSignup.email.message}</ResponseSpan>}
                     <Input
@@ -108,6 +114,7 @@ export default function Authentication() {
                         placeholder="Senha"
                         name="password"
                         register={registerSignup}
+                        setValue={setSignupValue}
                     />
                     {errorsSignup.password && <ResponseSpan>{errorsSignup.password.message}</ResponseSpan>}
                     <Input
@@ -115,6 +122,7 @@ export default function Authentication() {
                         placeholder="Confirmar senha"
                         name="confirmPassword"
                         register={registerSignup}
+                        setValue={setSignupValue}
                     />
                     {errorsSignup.confirmPassword && <ResponseSpan>{errorsSignup.confirmPassword.message}</ResponseSpan>}
                     <Button type="submit" text="Cadastrar"></Button>
