@@ -38,7 +38,7 @@ export default function Home() {
     return (
         <>
             <HomeHeader>
-                {topNews.length > 0 ? (
+                {topNews ? (
                     <Card
                         top={true}
                         id={topNews.id}
@@ -65,6 +65,7 @@ export default function Home() {
                 {news.slice(1).map((item) => (
                     <Card
                         key={item.id}
+                        id={item.id}
                         title={item.title}
                         text={item.text}
                         banner={item.banner}
